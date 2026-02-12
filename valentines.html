@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>b my valentine?</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            background-color: #ffe6e6;
+            overflow: hidden; /* Prevents scrollbars if button gets huge */
+        }
+
+        #container {
+            text-align: center;
+            max-width: 90%;
+        }
+
+        img {
+            max-width: 300px;
+            /* border-radius: 15px; */
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            /* border-radius: 8px; */
+            transition: transform 0.2s ease;
+        }
+
+        #yesBtn { background-color: #ff4d4d; color: white; z-index: 100; }
+        #noBtn { background-color: #ababab; color: white; }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <img id="mainImage" src="gif1.gif" alt="Valentine Image">
+        <h1 id="question">mar, will u be my valentine?</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn" onclick="handleYes()">Si</button>
+            <button id="noBtn" onclick="handleNo()">No</button>
+        </div>
+    </div>
+
+    <script>
+        let yesCount = 0;
+        let noCount = 0;
+        let yesScale = 1;
+
+        const mainImage = document.getElementById('mainImage');
+        const question = document.getElementById('question');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+
+        function handleYes() {
+            // If they have already clicked "No" once, clicking Yes goes straight to gif2
+            if (noCount > 0) {
+                showFinalCelebration();
+                return;
+            }
+
+            // Standard "Yes" path logic
+            yesCount++;
+            if (yesCount === 1) {
+                mainImage.src = "img1.png";
+                yesBtn.innerText = "de verdad?";
+                growYesButton(1.15); 
+            } else if (yesCount === 2) {
+                mainImage.src = "img2.png";
+                yesBtn.innerText = "for real?";
+                growYesButton(1.15);
+            } else if (yesCount === 3) {
+                showFinalCelebration();
+            }
+        }
+
+        function handleNo() {
+            noCount++;
+            mainImage.src = "gif2.gif";
+            
+            // Text logic for No button
+            if (noCount === 1 || noCount === 2) {
+                noBtn.innerText = "estas segura?";
+            } else {
+                noBtn.innerText = "ultima oportunidad";
+                mainImage.src = "gif4.gif";
+            }
+
+            // Yes button grows by 40%
+            growYesButton(1.40);
+        }
+
+        function growYesButton(scaleIncrease) {
+            yesScale *= scaleIncrease;
+            yesBtn.style.transform = `scale(${yesScale})`;
+        }
+
+        function showFinalCelebration() {
+            document.getElementById('container').innerHTML = `
+                <img src="gif3.gif" alt="Yay!">
+                <h1 style="font-size: 3rem;">letsgoooo ❤️</h1>
+            `;
+        }
+    </script>
+
+</body>
+</html>
